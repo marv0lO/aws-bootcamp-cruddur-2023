@@ -28,6 +28,8 @@ Succeded in creating a budget
 
 ![Cruddur Logical Design](assets/Logical%20Diagram.png)
 
+[Lucid Charts Share Link](https://lucid.app/lucidchart/invitations/accept/inv_d08dd0c9-452a-4537-abde-29777a66394b)
+
 
 
 
