@@ -1,4 +1,4 @@
-# Stage 1: Build the application
+# Step 1: Build the application
 FROM python:3.10-slim-buster AS builder
 
 WORKDIR /backend-flask
@@ -8,7 +8,7 @@ RUN pip3 install --user --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Stage 2: Run the application
+# Step 2: Run the application
 FROM python:3.10-slim-buster
 
 WORKDIR /backend-flask
