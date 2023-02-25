@@ -7,7 +7,16 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
+FROM python:3.10-slim-buster
+
+WORKDIR /backend-flask
+
+
+COPY execute_script.sh ./usr/local/bin/
+
+
 ENV FLASK_ENV=development
 
 EXPOSE ${PORT}
-CMD [ "python3", "-m", "flask", "run", "--host=0.0.0.0", "--port=4567" ]
+
+CMD [ "/usr/local/bin/execute_script"]
