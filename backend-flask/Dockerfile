@@ -28,4 +28,6 @@ ENV FLASK_ENV=development
 
 EXPOSE ${PORT}
 
+HEALTHCHECK CMD curl --fail http://localhost:5000/ || exit 1
+
 CMD [ "/usr/local/bin/execute_script.sh"]
