@@ -35,4 +35,25 @@ docker build -t backend-flask .
 ```
 docker run -d --rm -p 4567:4567 -it -e FRONTEND_URL='*' -e BACKEND_URL='*' backend-flask
 ```
-  
+![multi stage builds](assets/buildingimage.png)  
+
+### Tag and push image to docker hub
+1. Login to Docker Hub
+```
+docker login
+```
+2. Tag image
+```
+docker tag aws-bootcamp-cruddur-2023-backend-flask:latest marvol0/backend-cruddur:latest
+```
+3. Push image to Docker Hub
+```
+docker push marvol0/backend-cruddur:latest
+```
+
+![logs](assets/pushingtohub.png)
+
+4. Check Docker Hub Repo to verify push
+
+![Hub](assets/HubRepo.png)
+
