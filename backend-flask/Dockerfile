@@ -28,4 +28,6 @@ ENV FLASK_ENV=development
 
 EXPOSE ${PORT}
 
+HEALTHCHECK CMD curl --fail https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}/api/activities/home
+
 CMD [ "/usr/local/bin/execute_script.sh"]
