@@ -57,3 +57,57 @@ docker push marvol0/backend-cruddur:latest
 
 ![Hub](assets/HubRepo.png)
 
+### Multi-Stage Build
+
+### Implementing Healthcheck in docker-compose
+Adding health check
+```
+healthcheck:
+      test: curl --fail -s http://localhost:4567/api/activities/home/ 
+      interval: 30s
+      timeout: 10s
+      retries: 3 
+```
+### Best practices for writing Dockerfiles
+- A Docker image consists of read-only layers each of which represents a Dockerfile instruction. The layers are stacked and each one is a delta of the     changes from the previous layer.
+- Each instruction creates one layer:
+
+  FROM creates a layer from the ubuntu:18.04 Docker image.
+  COPY adds files from your Docker client’s current directory.
+  RUN builds your application with make.
+  CMD specifies what command to run within the container.
+  
+Reference [Docker Documentation](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
+
+### Run and install containers on local machine
+
+![Local machine](assets/localcontainercreation.png)
+
+Created a folder and cloned the cruddur repo
+
+### EC2 Instance
+
+![instance on console](assets/EC2creation.png)
+
+Accessing the instance and installing docker
+```
+sudo amazon-linux-extras install docker
+```
+
+![docker on EC2](assets/installingdockeronEC2.png)
+
+Pushed latest version of image in project workspace
+```
+docker login
+docker push marvol0/backend-cruddur:latest
+```
+
+Pulling image from docker hub on EC2 instace
+
+![docker hub pull](assets/pulledimagefromhub.png)
+
+Running the container on instance
+
+![](assets/triedrunningpulledimage.png)
+
+
