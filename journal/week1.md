@@ -1,5 +1,12 @@
 # Week 1 — App Containerization
 
+### Containerize Backend and Frontend
+Executed Docker-compose up and created images,
+successfully opened port 4567 and got a JSON response back
+
+
+
+
 ## Homework Challenges
 
 ### Run Dockerfile CMD as an external script
