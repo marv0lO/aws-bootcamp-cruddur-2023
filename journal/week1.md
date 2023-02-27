@@ -108,6 +108,6 @@ Pulling image from docker hub on EC2 instace
 
 Running the container on instance
 
-![](assets/triedrunningpulledimage.png)
+![Run pull](assets/triedrunningpulledimage.png)
 
 
