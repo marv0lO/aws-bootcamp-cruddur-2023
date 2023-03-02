@@ -1,33 +1,14 @@
-# Step 1: Build the application
-FROM python:3.10-slim-buster AS builder
-
-WORKDIR /backend-flask
-
-COPY requirements.txt requirements.txt
-RUN pip3 install --user --no-cache-dir -r requirements.txt
-
-COPY . .
-
-# Step 2: Run the application
 FROM python:3.10-slim-buster
 
 WORKDIR /backend-flask
 
-COPY --from=builder /root/.local /root/.local
-ENV PATH=/root/.local/bin:$PATH
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
 
-RUN apt-get update && apt-get install -y \
-    gcc \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY execute_script.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/execute_script.sh
+COPY . .
 
 ENV FLASK_ENV=development
 
 EXPOSE ${PORT}
 
-HEALTHCHECK CMD curl --fail https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}/api/activities/home
-
-CMD [ "/usr/local/bin/execute_script.sh"]
+CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0", "--port=4567"]
