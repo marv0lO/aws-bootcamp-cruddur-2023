@@ -86,6 +86,7 @@ cors = CORS(
   methods="OPTIONS,GET,HEAD,POST"
 )
 
+# CWLogs ----
 #@app.after_request
 #def after_request(response):
 #    timestamp = strftime('[%Y-%b-%d %H:%M]')
