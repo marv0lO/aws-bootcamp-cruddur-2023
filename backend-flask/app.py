@@ -14,7 +14,7 @@ from services.messages import *
 from services.create_message import *
 from services.show_activity import *
 
-from lib.cognito_jwt_token import CognitoJwtToken
+from lib.cognito_jwt_token import CognitoJwtToken, extract_access_token, TokenVerifyError
 
 # HoneyComb ---------
 from opentelemetry import trace
@@ -166,15 +166,15 @@ def data_home():
   access_token = CognitoJwtToken.extract_access_token(request.headers)
   try:
     claims = cognito_jwt_token.token_service.verify(access_token)
-    self.claims = self.token_service.claims
-    g.cognito_claims = self.claims
+    # authenticated request
   except TokenVerifyError as e:
-    _ = request.data
-    abort(make_response(jsonify(message=str(e)), 401))
-    data = HomeActivities.run()
-
-  app.logger.debug('claims')
-  app.logger.debug(claims)
+    app.logger.debug("authenticated")
+    app.logger.debug(claims)
+    app.logger.debug(claims['username'])
+    data = HomeActivities.run(cognito_user_id=claims['username'] )
+    # unauthenticated request
+    app.logger.debug("unauthenticated")
+  
   claims = aws_auth.claims
 
   return data, 200
