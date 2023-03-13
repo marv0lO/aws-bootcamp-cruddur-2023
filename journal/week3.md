@@ -131,4 +131,14 @@ aws cognito-idp admin-set-user-password --user-pool-id "us-east-1_EsWorbtLo" --u
 
 ![error calling calling cognito idp](./assets/error.png)
 
+- verification email
+
+![verification email](./assets/verificationemail.png)
+
 ![success login](./assets/successfullogin.png)
+
+- Implementing Custom Signup, Confirmation and Recovery Page
+
+
+
+
