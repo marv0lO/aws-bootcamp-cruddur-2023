@@ -223,4 +223,89 @@ Function returns false to prevent the form from being submitted.
 
 ![recover page](./assets/resetpassword.png)
 
+- Cognito Backend Server Verify
+Passing the JWT to HomeFeedPage.js file
+```
+const loadData = async () => {
+    try {
+      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities/home`
+      var startTime = performance.now()
+      const res = await fetch(backend_url, {
+        headers: {
+          // ******Add JWT to request Header*******
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`
+        },
+        method: "GET"
+      });
+      // Other part of the method/function .....
+  };
+```
+- Add CORS in app.py
+```
+cors = CORS(
+    app,
+    resources={r"/api/*": {"origins": origins}},
+    headers=['Content-Type', 'Authorization'],
+    expose_headers='Authorization',
+    methods="OPTIONS,GET,HEAD,POST"
+)
+```
+Placed a logger in the decorated data_home() function to see if a token is sent from the frontend whne authenticated user logs in.
+Implemented an external library called Flask-AWSCognito to verify the token received.
+
+- Import CognitoJwtToken and initialize in the app.py file
+
+```
+from lib.cognito_jwt_token import CognitoJwtToken, extract_access_token, TokenVerifyError
+
+app = Flask(__name__)
+
+#JWT Token
+cognito_jwt_token = CognitoJwtToken(
+                          user_pool_id = os.getenv("AWS_COGNITO_USER_POOLS_ID"), 
+                          user_pool_client_id = os.getenv("AWS_COGNITO_CLIENT_ID"), 
+                          region = os.getenv("AWS_DEFAULT_REGION")
+                          )
+```
+
+- Modified data_home() method
+
+```
+@app.route("/api/activities/home", methods=['GET'])
+def data_home():
+
+  access_token = cognito_jwt_token.extract_access_token(request.headers)
+  if access_token == "null": #empty accesstoken
+    data = HomeActivities.run()
+    return data, 200
+  
+  # If token isn't null
+  try:
+    cognito_jwt_token.verify(access_token)
+    app.logger.debug("Authenicated")
+    app.logger.debug(f"User: {cognito_jwt_token.claims['username']}")
+    data = HomeActivities.run(cognito_user=cognito_jwt_token.claims['username'])
+  except TokenVerifyError as e:
+    app.logger.debug("Authentication Failed")
+    app.logger.debug(e)
+    data = HomeActivities.run()
+
+  return data, 200
+```
+- Ensure the Jwt is removed when the user logs out by configuring the signout method in ProfileInfo.js
+
+```
+const signOut = async () => {
+  try {
+      await Auth.signOut({ global: true });
+      window.location.href = "/"
+      localStorage.removeItem("access_token") // Remove token when user logs out.
+  } catch (error) {
+      console.log('error signing out: ', error);
+  }
+}
+```
+
+## Homework Challenges
+
 
