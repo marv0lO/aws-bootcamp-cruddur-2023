@@ -17,18 +17,68 @@
 npm i aws-amplify --save
 ```
 
-- Configure .gitpod.yml to include the added package in the node modules
+- Configure Amplify in the app.js file
 
 ```
-  - name: npm-init
-    init: |
-      cd /workspace/aws-bootcamp-cruddur-2023/frontend-react-js
-      npm i --save \
-        @opentelemetry/api \
-        @opentelemetry/sdk-trace-web \
-        @opentelemetry/exporter-trace-otlp-http \
-        @opentelemetry/instrumentation-document-load \
-        @opentelemetry/context-zone \
-        aws-amplify
+  import { Amplify } from 'aws-amplify';
+
+Amplify.configure({
+  "AWS_PROJECT_REGION": process.env.REACT_APP_AWS_PROJECT_REGION,
+  "aws_cognito_identity_pool_id": process.env.REACT_APP_AWS_COGNITO_IDENTITY_POOL_ID,
+  "aws_cognito_region": process.env.REACT_APP_AWS_COGNITO_REGION,
+  "aws_user_pools_id": process.env.REACT_APP_AWS_USER_POOLS_ID,
+  "aws_user_pools_web_client_id": process.env.REACT_APP_CLIENT_ID,
+  "oauth": {},
+  Auth: {
+    // We are not using an Identity Pool
+    // identityPoolId: process.env.REACT_APP_IDENTITY_POOL_ID, // REQUIRED - Amazon Cognito Identity Pool ID
+    region: process.env.REACT_APP_AWS_PROJECT_REGION,           // REQUIRED - Amazon Cognito Region
+    userPoolId: process.env.REACT_APP_AWS_USER_POOLS_ID,         // OPTIONAL - Amazon Cognito User Pool ID
+    userPoolWebClientId: process.env.REACT_APP_CLIENT_ID,   // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
+  }
+});
 ```
+
+- Add Amplify env vars to docker-compose.yml
+
+```
+      REACT_AWS_PROJECT_REGION: "${AWS_DEFAULT_REGION}"
+      REACT_APP_AWS_COGNITO_REGION: "us-east-1"
+      REACT_APP_AWS_USER_POOLS_ID: "us-east-1_gaNJfNm6K"
+      REACT_APP_CLIENT_ID: ""
+```
+
+![cognitouser](./assets/createuser.png)
+
+- Configuring display of components once user is logged in 
+
+```
+// Homefeed.js
+//Add this to the import block
+import { Auth } from 'aws-amplify';
+
+//replace existing checkAuth function with the following function
+const checkAuth = async () => {
+  Auth.currentAuthenticatedUser({
+    // Optional, By default is false. 
+    // If set to true, this call will send a 
+    // request to Cognito to get the latest user data
+    bypassCache: false 
+  })
+  .then((user) => {
+    console.log('user',user);
+    return Auth.currentAuthenticatedUser()
+  }).then((cognito_user) => {
+      setUser({
+        display_name: cognito_user.attributes.name,
+        handle: cognito_user.attributes.preferred_username
+      })
+  })
+  .catch((err) => console.log(err));
+};
+```
+
+
+
+
 
