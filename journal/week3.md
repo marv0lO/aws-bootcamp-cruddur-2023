@@ -139,6 +139,88 @@ aws cognito-idp admin-set-user-password --user-pool-id "us-east-1_EsWorbtLo" --u
 
 - Implementing Custom Signup, Confirmation and Recovery Page
 
+##### Signup.js
+```
+const onsubmit = async (event) => {
+  event.preventDefault();
+  setErrors('');
+  console.log('username', username);
+  console.log('email', email);
+  console.log('name', name);
+  try {
+    const { user } = await Auth.signUp({
+      username: email,
+      password: password,
+      attributes: {
+        name: name,
+        email: email,
+        preferred_username: username,
+      },
+      autoSignIn: {
+        enabled: true,
+      },
+    });
+    console.log(user);
+    window.location.href = `/confirm?email=${email}`;
+  } catch (error) {
+    console.log(error);
+    setErrors(error.message);
+  }
+  return false;
+};
+```
 
+![verifying user on console](./assets/userverified.png)
+
+##### Confirmation.js
+```
+const resend_code = async (event) => {
+  setErrors('');
+  try {
+    await Auth.resendSignUp(email);
+    console.log('Code resent successfully');
+    setCodeSent(true);
+  } catch (err) {
+    console.log(err);
+    if (err.message === 'Username cannot be empty') {
+      setErrors('You need to provide an email in order to send Resend Activation Code.');
+    } else if (err.message === 'Username/client id combination not found.') {
+      setErrors('Email is invalid or cannot be found.');
+    }
+  }
+};
+```
+![confirmation page](./assets/confirmationpage.png)
+
+##### RecoverPage.js
+```
+const onsubmit_send_code = async (event) => {
+  event.preventDefault();
+  setErrors('');
+  Auth.forgotPassword(username)
+    .then((data) => setFormState('confirm_code'))
+    .catch((err) => setErrors(err.message));
+  return false;
+};
+```
+This code defines an asynchronous onsubmit_send_code function that handles a form submission event.
+
+```
+const onsubmit_confirm_code = async (event) => {
+  event.preventDefault();
+  setErrors('');
+  if (password === passwordAgain) {
+    Auth.forgotPasswordSubmit(username, code, password)
+      .then((data) => setFormState('success'))
+      .catch((err) => setErrors(err.message));
+  } else {
+    setErrors('Passwords do not match');
+  }
+  return false;
+};
+```
+Function returns false to prevent the form from being submitted.
+
+![recover page](./assets/resetpassword.png)
 
 
