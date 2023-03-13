@@ -52,8 +52,9 @@ Amplify.configure({
 
 - Configuring display of components once user is logged in 
 
+##### Homefeed.js
+
 ```
-// Homefeed.js
 //Add this to the import block
 import { Auth } from 'aws-amplify';
 
@@ -77,8 +78,57 @@ const checkAuth = async () => {
   .catch((err) => console.log(err));
 };
 ```
+This code adds the Auth object from the aws-amplify library to the import block and replaces an existing checkAuth function with a new one that uses Auth to check if the user is authenticated and retrieve their attributes.
+
+##### ProfileInfo.js
+
+```
+//Add this to the import block
+import { Auth } from 'aws-amplify';
+
+//replace existing signOut function with the following function
+  const signOut = async () => {
+    try {
+        await Auth.signOut({ global: true });
+        window.location.href = "/"
+    } catch (error) {
+        console.log('error signing out: ', error);
+    }
+  }
+```
+This code adds the Auth object from the aws-amplify library to the import block and replaces an existing signOut function with a new one that uses Auth to sign the user out and redirect them to the home page.
+
+##### SigninPage.js
+
+```
+import { Auth } from 'aws-amplify';
+
+const onsubmit = async (event) => {
+  setErrors('')
+  event.preventDefault();
+  Auth.signIn(email, password)
+  .then(user => {
+    localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
+    window.location.href = "/"
+  })
+  .catch(error => {
+    if (error.code == 'UserNotConfirmedException') {
+      window.location.href = "/confirm"
+    }
+    setErrors(error.message)
+  });
+  return false
+}
+```
+This code imports the Auth object from the aws-amplify library and defines an onsubmit function that handles a form submission event.
+
+- Manually verifying the user
+
+```
+aws cognito-idp admin-set-user-password --user-pool-id "us-east-1_EsWorbtLo" --username nickda --password REDACTED --permanent
+```
 
 
+![error calling calling cognito idp](./assets/error.png)
 
-
-
+![success login](./assets/successfullogin.png)
