@@ -163,7 +163,7 @@ def data_create_message():
 @app.route("/api/activities/home", methods=['GET'])
 #@xray_recorder.capture('activities_home')
 def data_home():
-  print("====")
+  print("====wq")
   access_token = CognitoJwtToken.extract_access_token(request.headers)
   try:
     claims = cognito_jwt_token.token_service.verify(access_token)

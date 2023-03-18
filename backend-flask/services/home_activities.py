@@ -13,7 +13,7 @@ class HomeActivities:
     #  now = datetime.now(timezone.utc).astimezone()
     #  span.set_attribute("app.id", now.isoformat())
 
-      sql = query_wrap_array("""
+    sql = query_wrap_array("""
       SELECT
         activities.uuid,
         users.display_name,
@@ -28,13 +28,14 @@ class HomeActivities:
       FROM public.activities
       LEFT JOIN public.users ON users.uuid = activities.user_uuid
       ORDER BY activities.created_at DESC
-      """)
-
-      with pool.connection() as conn:
-        with conn.cursor() as cur:
-          cur.execute(sql)
-          # this will return a tuple
-          # the first field being the data
-          json = cur.fetchone()    
-      return json[0]
-      return results
+    """)
+    print("sql--==-")
+    print(sql)
+    with pool.connection() as conn:
+      with conn.cursor() as cur:
+        cur.execute(sql)
+        # this will return a tuple
+        # the first field being the data
+        json = cur.fetchone()
+    return json[0]
+    return results
