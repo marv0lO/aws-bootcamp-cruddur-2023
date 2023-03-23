@@ -57,5 +57,13 @@ export CONNECTION_LOCAL_DOCKER_URL="postgresql://postgres:password@db:5432/crudd
 gp env CONNECTION_LOCAL_DOCKER_URL=$CONNECTION_LOCAL_DOCKER_URL
 ```
 
+_Bash scripting for database operation and SQL files_
 
+- Wrote bash scripts in the /backend-flask/bin/ directory with each script beginning with a  #! usr/bun/bash to initialize the file as a bash script
 
+- Gave the bash scripts execute permissions by running:
+```
+chmod 744 bin/db-*
+```
+
+!()[]
