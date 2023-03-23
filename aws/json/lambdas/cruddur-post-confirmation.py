@@ -24,7 +24,7 @@ def lambda_handler(event, context):
             %s, %s, %s, %s
             )
         """
-        args = [
+        params = [
             user_display_name,
             user_email,
             user_handle,
@@ -32,7 +32,7 @@ def lambda_handler(event, context):
         ]
 
         print(sql)
-        cur.execute(sql, *args)
+        cur.execute(sql, params)
         conn.commit()
         print('Commit Done')
 
