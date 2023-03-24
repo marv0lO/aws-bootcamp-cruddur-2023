@@ -1,5 +1,4 @@
 # Week 4 — Postgres and RDS
-// Just found my week2 journal submission commit didnt go through, I'm working on it again now
 ### Required homework
 
 _Create RDS Postgres Instance_
