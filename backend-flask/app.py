@@ -199,7 +199,7 @@ def data_create_message():
             return model['errors'], 422
         else:
             return model['data'], 200
-        except TokenVerifyError as e:
+    except TokenVerifyError as e:
             # unauthenticated requests
             app.logger.debug(e)
             return {}, 401
