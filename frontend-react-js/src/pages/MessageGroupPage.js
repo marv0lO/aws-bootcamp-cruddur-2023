@@ -8,7 +8,6 @@ import MessageGroupFeed from '../components/MessageGroupFeed';
 import MessagesFeed from '../components/MessageFeed';
 import MessagesForm from '../components/MessageForm';
 
-
 export default function MessageGroupPage() {
   const [messageGroups, setMessageGroups] = React.useState([]);
   const [messages, setMessages] = React.useState([]);
@@ -16,7 +15,6 @@ export default function MessageGroupPage() {
   const [user, setUser] = React.useState(null);
   const dataFetchedRef = React.useRef(false);
   const params = useParams();
-
   const loadMessageGroupsData = async () => {
     try {
       const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/message_groups`
@@ -56,7 +54,7 @@ export default function MessageGroupPage() {
       console.log(err);
     }
   };  
-
+  
   React.useEffect(()=>{
     //prevents double call
     if (dataFetchedRef.current) return;

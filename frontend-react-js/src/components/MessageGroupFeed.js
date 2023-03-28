@@ -7,6 +7,7 @@ export default function MessageGroupFeed(props) {
   if (props.otherUser) {
     message_group_new_item = <MessageGroupNewItem user={props.otherUser} />
   }
+
   return (
     <div className='message_group_feed'>
       <div className='message_group_feed_heading'>
