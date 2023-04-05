@@ -32,7 +32,7 @@ from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
 # Cloudwatch Logs ------
 import watchtower
-import logging
+import logging 
 
 # Rollbar ------
 from time import strftime
@@ -104,7 +104,7 @@ def init_rollbar():
     """init rollbar module"""
     rollbar.init(
         # access token
-        '5c462803440e4ed9a8a870c9608d9642',
+        rollbar_access_token,
         # environment name
         'production',
         # server root directory, makes tracebacks prettier
@@ -142,8 +142,8 @@ def data_message_groups():
   except TokenVerifyError as e:
     # unauthenticated requests
     app.logger.debug(e)
-    app.logger.debug("unauthenticated")
-    data = HomeActivities.run()
+    #app.logger.debug("unauthenticated")
+    #data = HomeActivities.run()
     return {}, 401
 
 
