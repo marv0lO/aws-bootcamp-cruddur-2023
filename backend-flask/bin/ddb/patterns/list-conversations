@@ -27,20 +27,20 @@ def get_my_user_uuid():
       users.handle =%(handle)s
   """
   uuid = db.query_value(sql,{
-    'handle':  'andrewbrown'
+    'handle':  'Marv'
   })
   return uuid
 
 my_user_uuid = get_my_user_uuid()
 print(f"my-uuid: {my_user_uuid}")
-year = str(datetime.now().year)
+year = datetime.now().year
 # define the query parameters
 query_params = {
   'TableName': table_name,
   'KeyConditionExpression': 'pk = :pk AND begins_with(sk,:year)',
   'ScanIndexForward': False,
   'ExpressionAttributeValues': {
-    ':year': {'S': year },
+    ':year': {'S': str(year) },
     ':pk': {'S': f"GRP#{my_user_uuid}"}
   },
   'ReturnConsumedCapacity': 'TOTAL'

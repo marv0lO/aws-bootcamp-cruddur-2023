@@ -3,7 +3,7 @@ import requests
 from jose import jwk, jwt
 from jose.exceptions import JOSEError
 from jose.utils import base64url_decode
-from flask_awscognito.exceptions import FlaskAWSCognitoError, TokenVerifyError
+
 
 class FlaskAWSCognitoError(Exception):
     pass
@@ -12,12 +12,14 @@ class FlaskAWSCognitoError(Exception):
 class TokenVerifyError(Exception):
     pass
 
+
 def extract_access_token(request_headers):
     access_token = None
     auth_header = request_headers.get("Authorization")
     if auth_header and " " in auth_header:
         _, access_token = auth_header.split()
-    return access_token  
+    return access_token
+
 
 class CognitoJwtToken:
     def __init__(self, user_pool_id, user_pool_client_id, region, request_client=None):
@@ -31,7 +33,7 @@ class CognitoJwtToken:
             self.request_client = requests.get
         else:
             self.request_client = request_client
-        self._load_jwk_keys()  
+        self._load_jwk_keys()
 
     def _load_jwk_keys(self):
         keys_url = f"https://cognito-idp.{self.region}.amazonaws.com/{self.user_pool_id}/.well-known/jwks.json"
@@ -90,7 +92,8 @@ class CognitoJwtToken:
         if not current_time:
             current_time = time.time()
         if current_time > claims["exp"]:
-            raise TokenVerifyError("Token is expired")  # probably another exception
+            # probably another exception
+            raise TokenVerifyError("Token is expired")
 
     def _check_audience(self, claims):
         # and the Audience  (use claims['client_id'] if verifying an access token)
