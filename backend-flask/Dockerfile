@@ -1,4 +1,4 @@
-FROM python:3.10-slim-buster # replace with ecr URI
+FROM 653454197649.dkr.ecr.us-east-1.amazonaws.com/cruddur-python:3.10-slim-buster 
 
 WORKDIR /backend-flask
 
