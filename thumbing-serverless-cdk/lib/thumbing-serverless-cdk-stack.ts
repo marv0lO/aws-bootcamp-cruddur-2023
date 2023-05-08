@@ -48,7 +48,7 @@ export class ThumbingServerlessCdkStack extends cdk.Stack {
  
      // add our s3 event notifications
      this.createS3NotifyToLambda(folderInput,lambda,uploadsBucket)
-    this.createS3NotifyToSns(folderOutput,snsTopic,assetsBucket)
+     this.createS3NotifyToSns(folderOutput,snsTopic,assetsBucket)
  
      // create policies
      const s3UploadsReadWritePolicy = this.createPolicyBucketAccess(uploadsBucket.bucketArn)

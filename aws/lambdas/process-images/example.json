@@ -20,11 +20,11 @@
           "s3SchemaVersion": "1.0",
           "configurationId": "testConfigRule",
           "bucket": {
-            "name": "assets.iamdevopsgeek.cloud",
+            "name": "marv.cruddur.com",
             "ownerIdentity": {
               "principalId": "EXAMPLE"
             },
-            "arn": "arn:aws:s3:::assets.iamdevopsgeek.cloud"
+            "arn": "arn:aws:s3:::marv.cruddur.com"
           },
           "object": {
             "key": "avatars/original/data.jpg",
