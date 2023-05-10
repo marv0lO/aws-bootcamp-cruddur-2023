@@ -28,7 +28,6 @@ export default function HomeFeedPage() {
           Authorization: `Bearer ${access_token}`
         },
         method: "GET"
-        method: "GET"
       });
       let resJson = await res.json();
       if (res.status === 200) {
